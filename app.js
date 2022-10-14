@@ -41,3 +41,4 @@ module.exports = app;
 
 //   Qwertyuiop123
 // mongodb+srv://Olena:Qwertyuiop123@cluster0.iimw2nu.mongodb.net/test
+// mongodb+srv://Olena:Qwertyuiop123@cluster0.iimw2nu.mongodb.net/general?retryWrites=true&w=majority
