@@ -1,3 +1,17 @@
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const { DB_HOST } = process.env;
+
+mongoose
+  .connect(DB_HOST)
+  .then(() => console.log("Database connection successful"))
+  .catch((error) => {
+    console.log(error.message);
+    process.exit(1);
+  });
+
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
@@ -24,3 +38,6 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+//   Qwertyuiop123
+// mongodb+srv://Olena:Qwertyuiop123@cluster0.iimw2nu.mongodb.net/test
