@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { validation } = require("../../middlewares");
+const { auth, validation } = require("../../middlewares");
 const { auth: ctrl } = require("../../controllers");
 const { joiRegisterSchema, joiLoginSchema } = require("../../models/user");
 
@@ -11,5 +11,6 @@ const router = express.Router();
 
 router.post("/register", validationMiddleware, ctrl.register);
 router.post("/login", validationLoginMiddleware, ctrl.login);
+router.get("/logout", auth, ctrl.logout);
 
 module.exports = router;
