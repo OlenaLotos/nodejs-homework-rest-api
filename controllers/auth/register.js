@@ -1,4 +1,5 @@
 const { Conflict } = require("http-errors");
+const gravatar = require("gravatar");
 // const bcrypt = require("bcryptjs");
 
 const { User } = require("../../models");
@@ -10,7 +11,9 @@ const register = async (req, res) => {
     throw new Conflict(`User with ${email} already exsist`);
   }
   // складніший спосіб створення користувача з хешуванням паролю
-  const newUser = new User({ email, subscription });
+
+  const avatarURL = gravatar.url(email);
+  const newUser = new User({ email, subscription, avatarURL });
 
   // легший  спосіб створення користувача з хешуванням паролю
   //   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -30,6 +33,7 @@ const register = async (req, res) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
     // result,
