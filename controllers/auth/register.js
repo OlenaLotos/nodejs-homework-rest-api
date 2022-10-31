@@ -1,5 +1,8 @@
 const { Conflict } = require("http-errors");
 const gravatar = require("gravatar");
+const { nanoid } = require("nanoid");
+
+const { sendEmail } = require("../../helpers");
 // const bcrypt = require("bcryptjs");
 
 const { User } = require("../../models");
@@ -13,7 +16,15 @@ const register = async (req, res) => {
   // складніший спосіб створення користувача з хешуванням паролю
 
   const avatarURL = gravatar.url(email);
-  const newUser = new User({ email, subscription, avatarURL });
+
+  const verificationToken = nanoid();
+
+  const newUser = new User({
+    email,
+    subscription,
+    avatarURL,
+    verificationToken,
+  });
 
   // легший  спосіб створення користувача з хешуванням паролю
   //   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
@@ -24,7 +35,15 @@ const register = async (req, res) => {
   //   });
   newUser.setPassword(password);
 
-  newUser.save();
+  await newUser.save();
+
+  const mail = {
+    to: email,
+    subject: "Confirm your email",
+    html: `<a target="_blank" href="http://localhost:3000/api/users/verify/${verificationToken}">Confirm email</a>`,
+  };
+
+  await sendEmail(mail);
 
   res.status(201).json({
     status: "success",
@@ -34,6 +53,7 @@ const register = async (req, res) => {
         email,
         subscription,
         avatarURL,
+        verificationToken,
       },
     },
     // result,
